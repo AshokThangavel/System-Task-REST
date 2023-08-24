@@ -3,7 +3,17 @@
     ;disabling password expire for development purposes
     zn "%SYS"
     Do ##class(Security.Users).UnExpireUserPasswords("*")
-
+    ;
+    write "Create web application..." 
+    set webName="/crud" 
+    set webProperties("Dispatcher")="TaskDetails.Dispathcer" 
+    set webProperties("namespace")="user" 
+    set webProperties("Enabled")=1 
+    set webProperties("AuthEnabled")=32 
+    set sc = ##Class(Security.Applications).Create(webName,.webProperties) 
+    write sc 
+    write "web application "_webName_" created" 
+    ;
     ; enabling callin for Embedded Python
     do ##class(Security.Services).Get("%Service_CallIn",.prop)
     set prop("Enabled")=1
