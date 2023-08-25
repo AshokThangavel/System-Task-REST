@@ -12,7 +12,7 @@
         Recurse="1"
         MatchRoles=":{$dbrole}"
         PasswordAuthEnabled="0"
-        UnauthenticatedEnabled="0"
+        UnauthenticatedEnabled="1"
         DispatchClass="TaskDetails.Dispatcher"
         ServeFiles="1"
         CookiePath="/crud"
