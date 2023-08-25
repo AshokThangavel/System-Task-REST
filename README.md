@@ -23,6 +23,13 @@ Get System task details in REST service
 
 Create a web application and add this dispatcher class.
 
+**database information urls**
+1. Get database freespace
+   http://server:port/webapplication/database/freespace     (http://localhost:52773/test/task/database/freespace)
+   ![image](https://github.com/AshokThangavel/System-Task-REST/assets/58914152/2488832b-fd77-422f-a914-4abc7b8c70e3)
+
+
+**Task information urls**
 List of urls
 1. Get all task list
    http://server:port/webapplication/task/alltask
