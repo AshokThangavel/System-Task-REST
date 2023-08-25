@@ -70,7 +70,4 @@ http://localhost:52773/crud/task/taskhistory/ExportQueryToCSV
 
 ## How to Test it
 
-Open IRIS terminal:
-
-```
-$ docker-compose exec iris iris session iris
+Run the various URLs from your Browser or Postman or similar
