@@ -8,6 +8,7 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Routes>
 <Route Url="/task/:taskType" Method="GET" Call="GetTaskDetails" Cors="true"/>
 <Route Url="/task/:taskType/:searchItem" Method="GET" Call="GetTaskDetails" Cors="true"/>
+<Route Url="/database/:searchItem" Method="GET" Call="GetDBDetails" Cors="true"/>
 </Routes>
 }
 
@@ -36,20 +37,51 @@ ClassMethod GetTaskDetails(pTaskType As %String = "", pSearch As %String = "") A
 		else {
 			set result = $ClassMethod(class,query_"Func")
 		}
-		#;get meta details
-		#dim meta As %SQL.StatementMetadata = result.%GetMetadata()
-		while result.%Next() {
-			set task = ##class(%DynamicObject).%New()
-			for col = 1: 1: meta.columnCount {
-				set column = meta.columns.GetAt(col).colName
-				do task.%Set(column, $Property(result, column))
-			}
-			do response.%Push(task)
-		}
+		do ..ProcessSQLResultToJSON(result,.response)
 		do ##class(%REST.Impl).%WriteResponse(response)
 	}
 	catch ex {
 		do ##class(%REST.Impl).%WriteResponse( { "status" : 0,"error" : (ex.BinDisplayString()) })
+	}
+	return $$$OK
+}
+
+ClassMethod GetDBDetails(pTaskType As %String = "") As %Status
+{
+	#dim response As %DynamicArray = ##class(%DynamicArray).%New()
+	do ##class(%REST.Impl).%SetContentType(..#CONTENTTYPEJSON)
+	Try {
+		set pTaskType=$$$LOWER(pTaskType)
+		Set class = ..GetClassDefinition($$$LOWER(pTaskType))
+		if class="" {
+			$$$ThrowStatus($$$ERROR($$$GeneralError,"Given url is not suitable for this call"))
+		}
+		set query = ..GetQueryMethod(pTaskType)
+		if query="" {
+			$$$ThrowStatus($$$ERROR($$$GeneralError,"Query method is empty"))
+		}
+		new $namespace
+		set $namespace="%SYS"
+		set result = $ClassMethod(class,query_"Func")
+		do ..ProcessSQLResultToJSON(result,.response)
+		do ##class(%REST.Impl).%WriteResponse(response)
+	}
+	catch ex {
+		do ##class(%REST.Impl).%WriteResponse( { "status" : 0,"error" : (ex.BinDisplayString()) })
+	}
+	return $$$OK
+}
+
+ClassMethod ProcessSQLResultToJSON(result, Output response) As %Status
+{
+	#dim meta As %SQL.StatementMetadata = result.%GetMetadata()
+	while result.%Next() {
+		set task = ##class(%DynamicObject).%New()
+		for col = 1: 1: meta.columnCount {
+			set column = meta.columns.GetAt(col).colName
+			do task.%Set(column, $Property(result, column))
+		}
+		do response.%Push(task)
 	}
 	return $$$OK
 }
@@ -61,6 +93,7 @@ $Case($$$LOWER(pTaskType),
 		"taskhistory"	: "DescendingTaskHistoryFilter",
 		"ondemandtask"	: "OnDemandTasksFilter",
 		"upcomingtask"	: "UpcomingTasksFilter",
+		"freespace"		: "FreeSpace",
 						: ""
 	)
 }
@@ -69,8 +102,9 @@ ClassMethod GetClassDefinition(pTaskType As %String = "") As %String [ CodeMode 
 {
 $Select(
 	pTaskType= "taskhistory" : "%SYS.Task.History",
-	pTaskType?1(1"alltask",1"ondemandtask",1"upcomingtask"):"%SYS.Task",		
-						   1 : ""
+	pTaskType?1(1"alltask",1"ondemandtask",1"upcomingtask"):"%SYS.Task",	
+	pTaskType="freespace"	: "SYS.Database",
+						  1	: ""
 	)
 }
 
