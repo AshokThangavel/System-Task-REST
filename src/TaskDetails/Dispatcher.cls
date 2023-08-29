@@ -1,5 +1,5 @@
 Include %occErrors
-
+/// REST dispatcher class
 Class TaskDetails.Dispatcher Extends %CSP.REST
 {
 
