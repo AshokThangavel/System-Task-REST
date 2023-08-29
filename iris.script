@@ -22,6 +22,8 @@
 
     zpm "install passwordless"
     ; importing the source code of the repository as ZPM module
+    do ##class(Security.Users).AddRoles("unknownuser","%All")
+    ; for unauthenticated webapplication
     zn "USER"
     zpm "load /home/irisowner/dev -v":1:1
     halt
