@@ -25,5 +25,6 @@
     do ##class(Security.Users).AddRoles("unknownuser","%All")
     ; for unauthenticated webapplication
     zn "USER"
+    zpm "install swagger-ui"
     zpm "load /home/irisowner/dev -v":1:1
     halt
