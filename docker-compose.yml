@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    hostname: system tasks REST
     restart: always
     command: --ISCAgent false
     ports:
