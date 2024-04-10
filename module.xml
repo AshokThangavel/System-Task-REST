@@ -6,14 +6,14 @@
       <Version>1.0.0</Version>
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
-      <Resource Name="TaskDetails.PKG"/>
+      <Resource Name="ZPMModules.PKG"/>
       <CSPApplication 
         Url="/crud"
         Recurse="1"
         MatchRoles=":{$dbrole}"
         PasswordAuthEnabled="0"
         UnauthenticatedEnabled="1"
-        DispatchClass="TaskDetails.Dispatcher"
+        DispatchClass="ZPMModules.Dispatcher"
         ServeFiles="1"
         CookiePath="/crud"
         UseCookies="2"
