@@ -1,6 +1,6 @@
 Include %occErrors
 /// REST dispatcher class
-Class ZPMModules.Dispatcher Extends %CSP.REST
+Class ZPMModules.SystemTask.Dispatcher Extends %CSP.REST
 {
 
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]

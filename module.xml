@@ -13,7 +13,7 @@
         MatchRoles=":{$dbrole}"
         PasswordAuthEnabled="0"
         UnauthenticatedEnabled="1"
-        DispatchClass="ZPMModules.Dispatcher"
+        DispatchClass="ZPMModules.SystemTask.Dispatcher"
         ServeFiles="1"
         CookiePath="/crud"
         UseCookies="2"

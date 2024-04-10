@@ -6,7 +6,7 @@
     ;
     write "Create web application..." 
     set webName="/crud" 
-    set webProperties("Dispatcher")="ZPMModules.Dispatcher" 
+    set webProperties("Dispatcher")="ZPMModules.SystemTask.Dispatcher" 
     set webProperties("namespace")="user" 
     set webProperties("Enabled")=1 
     set webProperties("AuthEnabled")=32 
